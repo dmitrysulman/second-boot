@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Books</title>
+</head>
+<body>
+    <p><a href="/people">Users</a> | Books</p>
+    <div th:each="book : ${bookPage.getContent()}">
+        <a th:text="${book.getTitle()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}" th:href="@{/books/{id}(id=${book.getId()})}"></a>
+    </div>
+    <hr>
+    <a href="/books/add">New book</a>
+    <br>
+    <a href="/books/search">Search book</a>
+    <div th:if="${bookPage.getTotalPages()} > 1">
+    <th:block th:each="page: ${#numbers.sequence(0, bookPage.getTotalPages() - 1)}">
+        <span th:if="${page} == ${bookPage.getNumber()}" th:text="${page} + 1"></span>
+        <a th:if="${page} != ${bookPage.getNumber()}" th:text="${page} + 1" th:href="@{/books(page=${page}, books_per_page=${bookPage.getSize()})}"></a>
+    </th:block>
+    </div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Book ' + ${book.getTitle()}"></title>
+</head>
+<body>
+    <a href="/books"><< To books...</a>
+    <hr>
+    <div th:text="${book.getTitle()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}"></div>
+    <br>
+    <div th:if="${people}">
+        The books is free. Assign?
+        <form th:method="POST" th:action="@{/books/{id}/assign(id=${book.getId()})}">
+            <label for="person">Choose user</label>
+            <select th:object="${person}" th:field="*{id}" id="person">
+                <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getFullName()}"></option>
+            </select>
+            <input type="submit" value="Assign the book">
+        </form>
+    </div>
+    <div th:if="${owner}">
+        Owner of the book: <a th:href="@{/people/{id}(id=${owner.getId()})}" th:text="${owner.getFullName()}"></a>
+        <form th:method="POST" th:action="@{/books/{id}/release(id=${book.getId()})}" onsubmit="return confirm('Do you really want to release the book?');">
+            <input type="submit" value="Release the book">
+        </form>
+    </div>
+    <hr>
+    <a th:href="@{/books/{id}/edit(id=${book.getId()})}">Edit book</a>
+    <br>
+    <br>
+    <form th:method="POST" th:action="@{/books/{id}/delete(id=${book.getId()})}" onsubmit="return confirm('Do you really want to delete the book?');">
+        <input type="submit" value="Delete book">
+    </form>
+</body>
+</html>

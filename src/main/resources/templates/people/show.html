@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'User ' + ${person.getFullName()}"></title>
+</head>
+<body>
+    <a href="/people"><< To users...</a>
+    <hr>
+    <div th:text="${person.getFullName()} + ', ' + ${person.getYearOfBirth()}"></div>
+    <div th:if="${books.isEmpty()}">
+        <p>This user doesn't take any book yet.</p>
+    </div>
+    <div th:if="${!books.isEmpty()}">
+        <hr>
+        <strong>Books:</strong>
+        <div th:each="book : ${books}">
+            <a th:style="${book.getBookOverdue()} ? 'color: red' : ''" th:text="${book.getTitle()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}" th:href="@{/books/{id}(id=${book.getId()})}"></a>
+        </div>
+    </div>
+    <hr>
+    <a th:href="@{/people/{id}/edit(id=${person.getId()})}">Edit user</a>
+    <br>
+    <br>
+    <form th:method="POST" th:action="@{/people/{id}/delete(id=${person.getId()})}" onsubmit="return confirm('Do you really want to delete the person?');">
+        <input type="submit" value="Delete user">
+    </form>
+</body>
+</html>
